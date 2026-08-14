@@ -1,0 +1,255 @@
+.login-page {
+    display: flex;
+    width: 100%;
+    padding: 231px 0 284px;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    display: flex;
+    width: 640px;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 로고 */
+.logo {
+    width: 396px;
+    height: 132px;
+    margin-bottom: 40px;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 로그인 폼 */
+.login-form {
+    display: flex;
+    width: 640px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* 이메일 / 비밀번호 영역 */
+.email-field,
+.password-field {
+    display: flex;
+    width: 640px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.email-field {
+    margin-bottom: 24px;
+}
+
+.password-field {
+    margin-bottom: 24px;
+}
+
+/* 라벨 */
+.email-field label,
+.password-field label {
+    color: var(--Secondary-800, #1F2937);
+
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 26px;
+}
+
+/* 이메일 입력창 */
+#email {
+    display: flex;
+    width: 640px;
+    height: 56px;
+    padding: 16px 24px;
+    box-sizing: border-box;
+
+    align-items: center;
+    gap: 10px;
+
+    border: none;
+    border-radius: 12px;
+    background: var(--Cool-Gray-100, #F3F4F6);
+
+    color: var(--Secondary-800, #1F2937);
+
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+#email::placeholder {
+    color: var(--Secondary-400, #9CA3AF);
+}
+
+/* 비밀번호 회색 박스 */
+.password-input-box {
+    display: flex;
+    width: 640px;
+    height: 56px;
+    padding: 16px 24px;
+    box-sizing: border-box;
+
+    justify-content: space-between;
+    align-items: center;
+
+    border-radius: 12px;
+    background: var(--Cool-Gray-100, #F3F4F6);
+}
+
+/* 비밀번호 입력창 */
+#password {
+    flex: 1;
+
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: var(--Secondary-800, #1F2937);
+
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+#password::placeholder {
+    color: var(--Secondary-400, #9CA3AF);
+}
+
+/* 눈 아이콘 */
+.password-toggle {
+    display: flex;
+    width: 24px;
+    height: 24px;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* input focus */
+#email:focus {
+    border: 1px solid #3692FF;
+    outline: none;
+}
+
+.password-input-box:focus-within {
+    border: 1px solid #3692FF;
+}
+
+/* 로그인 버튼 */
+.login-button {
+    display: flex;
+    width: 640px;
+    height: 56px;
+    padding: 16px 124px;
+    box-sizing: border-box;
+
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 24px;
+
+    border: none;
+    border-radius: 40px;
+    background: var(--Secondary-400, #9CA3AF);
+
+    color: var(--Cool-Gray-100, #F3F4F6);
+    text-align: center;
+
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px;
+    cursor: pointer;
+}
+
+/* 간편 로그인 */
+.social-login {
+    display: flex;
+    width: 640px;
+    height: 74px;
+    padding: 16px 23px;
+    box-sizing: border-box;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 24px;
+
+    border-radius: 8px;
+    background: #E6F2FF;
+}
+
+.social-login-text {
+    color: var(--Secondary-800, #1F2937);
+
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px;
+}
+
+.social-icons {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.social-icon {
+    width: 42px;
+    height: 42px;
+}
+
+.social-icon img {
+    width: 42px;
+    height: 42px;
+}
+
+/* 회원가입 안내 */
+.signup-guide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+
+    color: var(--Secondary-800, #1F2937);
+
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.signup-guide a {
+    color: var(--Primary-100, #3692FF);
+
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+}
