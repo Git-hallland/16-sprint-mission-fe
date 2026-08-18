@@ -1,14 +1,14 @@
 .signup-page {
     display: flex;
     width: 100%;
-    padding: 60px 640px 178px 640px;
+    padding: 3.75rem 40rem 11.125rem 40rem;
     justify-content: center;
     align-items: flex-start;
 }
 
 .signup-container {
     display: flex;
-    width: 640px;
+    width: 40rem;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
@@ -16,9 +16,9 @@
 
 /* 로고 */
 .logo {
-    width: 396px;
-    height: 132px;
-    margin-bottom: 40px;
+    width: 24.75rem;
+    height: 8.25rem;
+    margin-bottom: 2.5rem;
 }
 
 .logo img {
@@ -29,11 +29,11 @@
 /* 회원가입 폼 */
 .signup-form {
     display: flex;
-    width: 640px;
+    width: 40rem;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
-    margin-bottom: 24px;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 /* 이메일 / 닉네임 / 비밀번호 / 비밀번호 확인 영역 */
@@ -44,7 +44,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 1rem;
 }
 
 /* 라벨 */
@@ -54,7 +54,7 @@
 .password-confirm-field label {
     color: var(--secondary-800);
 
-    font-size: 18px;
+    font-size: 1.125rem;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -67,25 +67,25 @@
 #password-confirm {
     color: var(--secondary-800);
 
-    font-size: 16px;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 400;
-    line-height: 26px;
+    line-height: 1.625rem;
 }
 
 /* 이메일 / 닉네임 입력창 */
 #email,
 #nickname {
     display: flex;
-    width: 640px;
-    height: 56px;
-    padding: 16px 24px;
+    width: 40rem;
+    height: 3.5rem;
+    padding: 1rem 1.5rem;
 
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
 
     border: none;
-    border-radius: 12px;
+    border-radius: 0.75rem;
     background: var(--secondary-100);
 }
 
@@ -100,14 +100,14 @@
 /* 비밀번호 회색 박스 */
 .password-input-box {
     display: flex;
-    width: 640px;
-    height: 56px;
-    padding: 16px 24px;
+    width: 40rem;
+    height: 3.5rem;
+    padding: 1rem 1.5rem;
 
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
 
-    border-radius: 12px;
+    border-radius: 0.75rem;
     background: var(--secondary-100);
 }
 
@@ -135,8 +135,9 @@
 /* 눈 아이콘 버튼 */
 .password-toggle {
     display: flex;
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
+
     justify-content: center;
     align-items: center;
 
@@ -149,22 +150,24 @@
 /* 회원가입 버튼 */
 .signup-button {
     display: flex;
-    padding: 16px 124px;
+    padding: 1rem 7.75rem;
+
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
     align-self: stretch;
 
     border: none;
-    border-radius: 40px;
+    border-radius: 2.5rem;
     background: var(--secondary-400);
 
     color: #FFF;
     text-align: center;
-    font-size: 20px;
+
+    font-size: 1.25rem;
     font-style: normal;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 1.5rem;
 
     cursor: pointer;
 }
@@ -172,42 +175,38 @@
 /* 간편 로그인 */
 .social-login {
     display: flex;
-    width: 640px;
-    height: 74px;
-    padding: 16px 23px;
+    width: 40rem;
+    height: 4.625rem;
+    padding: 1rem 1.4375rem;
 
     justify-content: space-between;
     align-items: center;
 
-    border-radius: 8px;
+    border-radius: 0.5rem;
     background: #E6F2FF;
-    margin-bottom: 24px;
+    margin-bottom: 1.5rem;
 }
 
 .social-login-text {
     color: var(--secondary-800);
 
-    font-size: 16px;
+    font-size: 1rem;
     font-style: normal;
     font-weight: 500;
-    line-height: 26px;
+    line-height: 1.625rem;
 }
 
 /* 구글 / 카카오 아이콘 영역 */
 .social-icons {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
+    gap: 1rem;
 }
 
-.social-icon {
-    width: 42px;
-    height: 42px;
-}
-
+.social-icon,
 .social-icon img {
-    width: 42px;
-    height: 42px;
+    width: 2.625rem;
+    height: 2.625rem;
 }
 
 /* 로그인 안내 */
@@ -215,22 +214,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 4px;
+    gap: 0.25rem;
 }
 
 .login-guide span {
     color: var(--secondary-800);
 
-    font-size: 14px;
+    font-size: 0.875rem;
     font-style: normal;
     font-weight: 500;
-    line-height: 24px;
+    line-height: 1.5rem;
 }
 
 .login-guide a {
     color: #3182F6;
 
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
