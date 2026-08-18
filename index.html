@@ -1,19 +1,26 @@
-<title>판다마켓</title>
+<!DOCTYPE html>
+<html lang="ko">
 
-<link rel="stylesheet" href="./css/reset.css">
-<link rel="stylesheet" href="./css/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>판다마켓</title>
+
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
 
 <body>
 
     <!-- 상단 시작 -->
-
     <header>
 
         <div class="header-inner">
 
             <a href="/" class="logo">
-                <img src="./images/logo.svg" alt="판다마켓">
-                <span>판다마켓</span>
+                <img src="./images/logo.png" alt="판다마켓">
             </a>
 
             <a href="/login" class="login">
@@ -23,14 +30,14 @@
         </div>
 
     </header>
-
     <!-- 상단 끝 -->
 
-    <!-- 중단 시작 -->
 
+    <!-- 중단 시작 -->
     <main>
 
-        <section class="home-top" id="home-top">
+        <!-- 홈 상단 -->
+        <section class="home-top">
 
             <div class="home-top-inner">
 
@@ -46,19 +53,29 @@
                     </a>
 
                 </div>
-                <img src="./images/Img_home_top.png" alt="판다마켓" class="home-bottom-image">
+
+                <img
+                    src="./images/Img_home_top.png"
+                    alt="판다마켓"
+                    class="home-bottom-image"
+                >
+
             </div>
 
         </section>
 
 
+        <!-- 인기 상품 -->
         <section class="item">
 
             <div class="item-inner">
 
                 <div class="rayer">
 
-                    <img src="./images/Img_home_01.png" alt="인기 상품">
+                    <img
+                        src="./images/Img_home_01.png"
+                        alt="인기 상품"
+                    >
 
                 </div>
 
@@ -86,134 +103,187 @@
 
         </section>
 
-        <section>
 
-            <section class="search">
+        <!-- 상품 검색 -->
+        <section class="search">
 
-                <div class="search-inner">
+            <div class="search-inner">
 
-                    <div class="search-content">
+                <div class="search-content">
 
-                        <div class="search-title">
+                    <div class="search-title">
 
-                            <span>Search</span>
+                        <span>Search</span>
 
-                            <h3>
-                                구매를 원하는<br>
-                                상품을 검색하세요
-                            </h3>
+                        <h3>
+                            구매를 원하는<br>
+                            상품을 검색하세요
+                        </h3>
 
-                            <h6>
-                                구매하고 싶은 물품은 검색해서<br>
-                                쉽게 찾아보세요
-                            </h6>
-
-                        </div>
-
-                    </div>
-
-                    <div class="rayer">
-
-                        <img src="./images/Img_home_02.png" alt="상품 검색">
+                        <h6>
+                            구매하고 싶은 물품은 검색해서<br>
+                            쉽게 찾아보세요
+                        </h6>
 
                     </div>
 
                 </div>
 
-            </section>
+                <div class="rayer">
 
-            <section>
+                    <img
+                        src="./images/Img_home_02.png"
+                        alt="상품 검색"
+                    >
 
-                <section class="register">
+                </div>
 
-                    <div class="register-inner">
+            </div>
 
-                        <div class="rayer">
+        </section>
 
-                            <img src="./images/Img_home_03.png" alt="상품 등록">
 
-                        </div>
+        <!-- 상품 등록 -->
+        <section class="register">
 
-                        <div class="register-content">
+            <div class="register-inner">
 
-                            <span>Register</span>
+                <div class="rayer">
 
-                            <div class="register-title">
+                    <img
+                        src="./images/Img_home_03.png"
+                        alt="상품 등록"
+                    >
 
-                                <h4>
-                                    판매를 원하는 <br>
-                                    상품을 등록하세요
-                                </h4>
+                </div>
 
-                                <p>
-                                    어떤 물건이든 판매하고 싶은 상품을
-                                    쉽게 등록해보세요
-                                </p>
+                <div class="register-content">
 
-                            </div>
+                    <span>Register</span>
 
-                        </div>
+                    <div class="register-title">
+
+                        <h4>
+                            판매를 원하는<br>
+                            상품을 등록하세요
+                        </h4>
+
+                        <p>
+                            어떤 물건이든 판매하고 싶은 상품을
+                            쉽게 등록해보세요
+                        </p>
 
                     </div>
 
-                </section>
+                </div>
 
-                <section class="home-bottom">
+            </div>
 
-                    <div class="home-bottom-inner">
-
-                        <div class="home-bottom-content">
-
-                            <h1>
-                                믿을 수 있는<br>
-                                판다마켓 중고 거래
-                            </h1>
-
-                        </div>
-                        <img src="./images/Img_home_bottom.png" alt="판다마켓" class="home-top-image">
-                    </div>
+        </section>
 
 
+        <!-- 홈 하단 -->
+        <section class="home-bottom">
 
-                </section>
+            <div class="home-bottom-inner">
+
+                <div class="home-bottom-content">
+
+                    <h1>
+                        믿을 수 있는<br>
+                        판다마켓 중고 거래
+                    </h1>
+
+                </div>
+
+                <img
+                    src="./images/Img_home_bottom.png"
+                    alt="판다마켓"
+                    class="home-top-image"
+                >
+
+            </div>
+
+        </section>
 
     </main>
+    <!-- 중단 끝 -->
 
-    <!-- 중단 끝-->
 
     <!-- 하단 시작 -->
-
     <footer>
+
         <div class="footer-content">
 
-            <span class="footer-copyright">©codeit - 2024</span>
+            <span class="footer-copyright">
+                ©codeit - 2024
+            </span>
 
             <nav class="footer-menu">
-                <a href="/privacy">Privacy Policy</a>
-                <a href="/faq">FAQ</a>
+
+                <a href="/privacy">
+                    Privacy Policy
+                </a>
+
+                <a href="/faq">
+                    FAQ
+                </a>
+
             </nav>
 
             <div class="footer-sns">
-                <a href="https://www.facebook.com/" target="_blank">
-                    <img src="./images/ic_facebook.svg" alt="페이스북">
+
+                <a
+                    href="https://www.facebook.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="./images/ic_facebook.svg"
+                        alt="페이스북"
+                    >
                 </a>
 
-                <a href="https://twitter.com/" target="_blank">
-                    <img src="./images/ic_twitter.svg" alt="트위터">
+                <a
+                    href="https://twitter.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="./images/ic_twitter.svg"
+                        alt="트위터"
+                    >
                 </a>
 
-                <a href="https://www.youtube.com/" target="_blank">
-                    <img src="./images/ic_youtube.svg" alt="유튜브">
+                <a
+                    href="https://www.youtube.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="./images/ic_youtube.svg"
+                        alt="유튜브"
+                    >
                 </a>
 
-                <a href="https://www.instagram.com/" target="_blank">
-                    <img src="./images/ic_instagram.svg" alt="인스타그램">
+                <a
+                    href="https://www.instagram.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="./images/ic_instagram.svg"
+                        alt="인스타그램"
+                    >
                 </a>
+
             </div>
 
         </div>
-    </footer>
 
+    </footer>
     <!-- 하단 끝 -->
 
 </body>
+
+</html>
