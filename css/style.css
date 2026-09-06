@@ -31,10 +31,14 @@ footer {
     background: var(--secondary-900);
 }
 
+main {
+    padding-top: 4.375rem;
+}
+
 
 /* 공통 */
 
-.rayer {
+.layer {
     border-radius: 0.75rem;
     background: var(--secondary-100);
 }
@@ -44,9 +48,11 @@ footer {
 
 .header-inner {
     display: flex;
+    width: 100%;
+    max-width: 95rem;
+    margin: 0 auto;
     justify-content: space-between;
     align-items: center;
-    align-self: stretch;
 }
 
 .logo {
@@ -131,7 +137,7 @@ footer {
 }
 
 .home-top-content h1,
-.home-bottom-content h1 {
+.home-bottom-content h2 {
     color: var(--secondary-700);
 
     font-size: 2.5rem;
@@ -178,16 +184,10 @@ footer {
     gap: 0.625rem;
 }
 
-.item {
-    padding: 8.625rem 21.5rem;
-}
-
-.search {
-    padding: 8.625rem 21.375rem;
-}
-
+.item,
+.search,
 .register {
-    padding: 8.625rem 22.5rem;
+    padding: 8.625rem 0;
 }
 
 
@@ -197,6 +197,7 @@ footer {
 .register-inner {
     display: flex;
     width: 61.75rem;
+    margin: 0 auto;
 
     justify-content: center;
     align-items: center;
@@ -285,8 +286,8 @@ footer {
 
 /* 큰 제목 공통 */
 .item-content h2,
-.search-content h3,
-.register-content h4 {
+.search-content h2,
+.register-content h2 {
     color: var(--secondary-700);
 
     font-size: 2.5rem;
@@ -296,14 +297,14 @@ footer {
     letter-spacing: 0.05rem;
 }
 
-.search-content h3 {
+.search-content h2 {
     text-align: right;
 }
 
 
 /* 설명 텍스트 공통 */
-.item-content h5,
-.search-content h6,
+.item-content p,
+.search-content p,
 .register-content p {
     color: var(--secondary-700);
 
@@ -313,7 +314,7 @@ footer {
     line-height: 2rem;
 }
 
-.search-content h6 {
+.search-content p {
     text-align: right;
 }
 
@@ -356,9 +357,11 @@ footer {
 
 .footer-content {
     display: flex;
+    width: 100%;
+    max-width: 95rem;
+    margin: 0 auto;
     justify-content: space-between;
     align-items: center;
-    align-self: stretch;
 }
 
 .footer-copyright,
