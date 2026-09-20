@@ -1,47 +1,40 @@
+import axios from "https://cdn.jsdelivr.net/npm/axios@1.7.9/+esm";
+
 const BASE_URL = "https://panda-market-api-crud.vercel.app";
+
+async function request(url, options = {}) {
+  try {
+    const response = await axios({
+      url,
+      ...options,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+}
 
 export async function getProductList(
   page = 1,
   pageSize = 10,
   keyword = ""
 ) {
-  const query = new URLSearchParams({
-    page,
-    pageSize,
-    keyword,
+  return request(`${BASE_URL}/products`, {
+    method: "GET",
+    params: {
+      page,
+      pageSize,
+      keyword,
+    },
   });
-
-  try {
-    const response = await fetch(`${BASE_URL}/products?${query}`);
-
-    if (!response.ok) {
-      throw new Error(`상품 목록 조회 실패: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    console.error(error.message);
-  }
 }
 
 export async function getProduct(productId) {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/products/${productId}`
-    );
-
-    if (!response.ok) {
-      throw new Error(`상품 상세 조회 실패: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    console.error(error.message);
-  }
+  return request(`${BASE_URL}/products/${productId}`, {
+    method: "GET",
+  });
 }
 
 export async function createProduct(
@@ -51,31 +44,16 @@ export async function createProduct(
   tags,
   images
 ) {
-  try {
-    const response = await fetch(`${BASE_URL}/products`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        description,
-        price,
-        tags,
-        images,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`상품 생성 실패: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    console.error(error.message);
-  }
+  return request(`${BASE_URL}/products`, {
+    method: "POST",
+    data: {
+      name,
+      description,
+      price,
+      tags,
+      images,
+    },
+  });
 }
 
 export async function patchProduct(
@@ -86,53 +64,20 @@ export async function patchProduct(
   tags,
   images
 ) {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/products/${productId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          price,
-          tags,
-          images,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`상품 수정 실패: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    console.error(error.message);
-  }
+  return request(`${BASE_URL}/products/${productId}`, {
+    method: "PATCH",
+    data: {
+      name,
+      description,
+      price,
+      tags,
+      images,
+    },
+  });
 }
 
 export async function deleteProduct(productId) {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/products/${productId}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`상품 삭제 실패: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch (error) {
-    console.error(error.message);
-  }
+  return request(`${BASE_URL}/products/${productId}`, {
+    method: "DELETE",
+  });
 }

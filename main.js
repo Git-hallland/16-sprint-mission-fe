@@ -25,8 +25,14 @@ getArticleList(1, 10, "")
   })
   .then((article) => {
     console.log("게시글 상세:", article);
+  })
+  .catch((error) => {
+    console.error("Article API 테스트 실패:", error.message);
+  })
+  .finally(() => {
+    console.log("Article API 테스트 종료");
   });
-  
+
 // 게시글 생성 테스트 완료
 // 새로고침할 때마다 게시글이 생성되지 않도록 주석 처리
 // createArticle(
@@ -53,42 +59,48 @@ getArticleList(1, 10, "")
 // });
 
 async function testProductService() {
-  const productList = await getProductList(1, 10, "");
+  try {
+    const productList = await getProductList(1, 10, "");
 
-  console.log("상품 목록:", productList);
+    console.log("상품 목록:", productList);
 
-  const firstProductId = productList.list[0].id;
-  const product = await getProduct(firstProductId);
+    const firstProductId = productList.list[0].id;
+    const product = await getProduct(firstProductId);
 
-  console.log("상품 상세:", product);
+    console.log("상품 상세:", product);
 
-  // 상품 생성, 수정, 삭제 테스트 완료
-  // 반복 실행을 방지하기 위해 주석 처리
+    // 상품 생성, 수정, 삭제 테스트 완료
+    // 반복 실행을 방지하기 위해 주석 처리
 
-  // const createdProduct = await createProduct(
-  //   "송정현 CRUD 테스트 상품",
-  //   "생성, 수정, 삭제를 연속으로 테스트합니다.",
-  //   10000,
-  //   ["테스트", "스프린트3"],
-  //   ["https://example.com/product.jpg"]
-  // );
+    // const createdProduct = await createProduct(
+    //   "송정현 CRUD 테스트 상품",
+    //   "생성, 수정, 삭제를 연속으로 테스트합니다.",
+    //   10000,
+    //   ["테스트", "스프린트3"],
+    //   ["https://example.com/product.jpg"]
+    // );
 
-  // console.log("생성된 상품:", createdProduct);
+    // console.log("생성된 상품:", createdProduct);
 
-  // const updatedProduct = await patchProduct(
-  //   createdProduct.id,
-  //   "수정된 송정현 CRUD 테스트 상품",
-  //   "PATCH 요청으로 상품 정보를 수정했습니다.",
-  //   15000,
-  //   ["수정", "스프린트3"],
-  //   ["https://example.com/updated-product.jpg"]
-  // );
+    // const updatedProduct = await patchProduct(
+    //   createdProduct.id,
+    //   "수정된 송정현 CRUD 테스트 상품",
+    //   "PATCH 요청으로 상품 정보를 수정했습니다.",
+    //   15000,
+    //   ["수정", "스프린트3"],
+    //   ["https://example.com/updated-product.jpg"]
+    // );
 
-  // console.log("수정된 상품:", updatedProduct);
+    // console.log("수정된 상품:", updatedProduct);
 
-  // const deletedProduct = await deleteProduct(createdProduct.id);
+    // const deletedProduct = await deleteProduct(createdProduct.id);
 
-  // console.log("삭제된 상품:", deletedProduct);
+    // console.log("삭제된 상품:", deletedProduct);
+  } catch (error) {
+    console.error("Product API 테스트 실패:", error.message);
+  } finally {
+    console.log("Product API 테스트 종료");
+  }
 }
 
 testProductService();

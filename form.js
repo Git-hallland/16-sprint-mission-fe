@@ -54,10 +54,13 @@ export function setupPasswordToggle(
     passwordInput.type =
       isPasswordHidden ? "text" : "password";
 
-    toggleIcon.alt =
-      isPasswordHidden
-        ? "비밀번호 표시 중"
-        : "비밀번호 숨김";
+    toggleIcon.src = isPasswordHidden
+      ? "../images/btn_visibility_off_24px.svg"
+      : "../images/btn_visibility_off_24px.svg";
+
+    toggleIcon.alt = isPasswordHidden
+      ? "비밀번호 표시 중"
+      : "비밀번호 숨김";
   }
 
   toggleButton.addEventListener(

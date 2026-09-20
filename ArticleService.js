@@ -17,6 +17,7 @@ export function getArticleList(page = 1, pageSize = 10, keyword = "") {
     })
     .catch((error) => {
       console.error(error.message);
+      throw error;
     });
 }
 
@@ -31,6 +32,7 @@ export function getArticle(articleId) {
     })
     .catch((error) => {
       console.error(error.message);
+      throw error;
     });
 }
 
@@ -55,6 +57,7 @@ export function createArticle(title, content, image) {
     })
     .catch((error) => {
       console.error(error.message);
+      throw error;
     });
 }
 
@@ -79,6 +82,7 @@ export function patchArticle(articleId, title, content, image) {
     })
     .catch((error) => {
       console.error(error.message);
+      throw error;
     });
 }
 
@@ -95,5 +99,6 @@ export function deleteArticle(articleId) {
     })
     .catch((error) => {
       console.error(error.message);
+      throw error;
     });
 }
