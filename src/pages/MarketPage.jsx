@@ -1,8 +1,8 @@
+import { Link } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import SortDropdown from "../components/SortDropdown.jsx";
-import "../styles/market.css";
 import { useEffect, useRef, useState } from "react";
 import { getProducts } from "../api/products.js";
 import usePageSize from "../hooks/usePageSize.js";
@@ -74,7 +74,7 @@ function MarketPage() {
     const endPage = Math.min(startPage + 4, totalPages);
 
     return (
-        <>
+        <div className="market-page">
             <Header />
 
             <main className="market-main">
@@ -99,9 +99,9 @@ function MarketPage() {
                         <div className="market-toolbar-top">
                             <h2 className="market-section-title">판매 중인 상품</h2>
 
-                            <button className="market-register-button">
+                            <Link to="/registration" className="market-register-button">
                                 상품 등록하기
-                            </button>
+                            </Link>
                         </div>
 
                         <div className="market-toolbar-bottom">
@@ -193,7 +193,7 @@ function MarketPage() {
             </main>
 
             <Footer />
-        </>
+        </div>
     );
 }
 
