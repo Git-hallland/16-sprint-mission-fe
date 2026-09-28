@@ -658,3 +658,11 @@ footer {
   }
 
 }
+
+.market-error-message {
+  margin: 2rem 0;
+  color: var(--secondary-600);
+  font-size: 1rem;
+  line-height: 1.625rem;
+  text-align: center;
+}

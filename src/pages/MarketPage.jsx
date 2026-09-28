@@ -3,7 +3,7 @@ import Footer from "../components/Footer.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import SortDropdown from "../components/SortDropdown.jsx";
 import "../styles/market.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getProducts } from "../api/products.js";
 import usePageSize from "../hooks/usePageSize.js";
 
@@ -14,10 +14,20 @@ function MarketPage() {
     const [orderBy, setOrderBy] = useState("recent");
     const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const requestIdRef = useRef(0);
+
+
     const { productPageSize: pageSize, bestPageSize } = usePageSize();
 
     useEffect(() => {
         const fetchProducts = async () => {
+            const requestId = ++requestIdRef.current;
+
+            setErrorMessage("");
+
+
             try {
                 const bestProductData = await getProducts({
                     page: 1,
@@ -32,11 +42,22 @@ function MarketPage() {
                     keyword,
                 });
 
+                if (requestId !== requestIdRef.current) {
+                    return;
+                }
+
                 setBestProducts(bestProductData.list);
                 setProducts(productData.list);
                 setTotalCount(productData.totalCount);
             } catch (error) {
+                if (requestId !== requestIdRef.current) {
+                    return;
+                }
+
                 console.error("Error fetching products:", error);
+                setErrorMessage(
+                    "상품 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요."
+                );
             }
         };
 
@@ -106,55 +127,67 @@ function MarketPage() {
                         </div>
                     </div>
 
-                    <div className="product-grid">
-                        {products.map((product) => (
-                            <ProductCard
-                                key={product.id}
-                                image={product.images[0]}
-                                name={product.name}
-                                price={product.price}
-                                favoriteCount={product.favoriteCount}
-                            />
-                        ))}
-                    </div>
+                    {errorMessage ? (
+                        <p className="market-error-message">
+                            {errorMessage}
+                        </p>
+                    ) : (
+                        <div className="product-grid">
+                            {products.map((product) => (
+                                <ProductCard
+                                    key={product.id}
+                                    image={product.images[0]}
+                                    name={product.name}
+                                    price={product.price}
+                                    favoriteCount={product.favoriteCount}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </section>
 
-                <div className="pagination">
-                    <button
-                        className="pagination-arrow"
-                        aria-label="이전 페이지 그룹"
-                        onClick={() => setPage(Math.max(1, startPage - 1))}
-                        disabled={startPage === 1}
-                    >
-                        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
-                    </button>
+                {!errorMessage && totalPages > 0 && (
+                    <div className="pagination">
+                        <button
+                            className="pagination-arrow"
+                            aria-label="이전 페이지 그룹"
+                            onClick={() => setPage(Math.max(1, startPage - 1))}
+                            disabled={startPage === 1}
+                        >
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                        </button>
 
-                    {Array.from(
-                        { length: endPage - startPage + 1 },
-                        (_, index) => {
-                            const pageNumber = startPage + index;
+                        {Array.from(
+                            { length: endPage - startPage + 1 },
+                            (_, index) => {
+                                const pageNumber = startPage + index;
 
-                            return (
-                                <button
-                                    key={pageNumber}
-                                    className={page === pageNumber ? "active" : ""}
-                                    onClick={() => setPage(pageNumber)}
-                                >
-                                    {pageNumber}
-                                </button>
-                            );
-                        }
-                    )}
+                                return (
+                                    <button
+                                        key={pageNumber}
+                                        className={page === pageNumber ? "active" : ""}
+                                        onClick={() => setPage(pageNumber)}
+                                    >
+                                        {pageNumber}
+                                    </button>
+                                );
+                            }
+                        )}
 
-                    <button
-                        className="pagination-arrow"
-                        aria-label="다음 페이지 그룹"
-                        onClick={() => setPage(Math.min(totalPages, endPage + 1))}
-                        disabled={endPage === totalPages}
-                    >
-                        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
-                    </button>
-                </div>
+                        <button
+                            className="pagination-arrow"
+                            aria-label="다음 페이지 그룹"
+                            onClick={() => setPage(Math.min(totalPages, endPage + 1))}
+                            disabled={endPage === totalPages}
+                        >
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                )}
 
 
             </main>
