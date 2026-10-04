@@ -1,66 +1,91 @@
 import express from "express";
-import Product from "../models/Product.js";
+import prisma from "../lib/prisma.js";
 
 const router = express.Router();
+
+const productFields = ["name", "description", "price", "tags"];
+
+const isValidId = (value) => {
+  return /^[1-9]\d*$/.test(value) &&
+    Number.isSafeInteger(Number(value)) &&
+    Number(value) <= 2147483647;
+};
 
 const isValidProductField = (field, value) => {
   switch (field) {
     case "name":
-      return typeof value === "string" && value.trim().length >= 1 && value.trim().length <= 10;
+      return typeof value === "string" &&
+        value.trim().length >= 1 &&
+        value.trim().length <= 10;
+
     case "description":
-      return typeof value === "string" && value.trim().length >= 10 && value.trim().length <= 100;
+      return typeof value === "string" &&
+        value.trim().length >= 10 &&
+        value.trim().length <= 100;
+
     case "price":
-      return typeof value === "number" && Number.isFinite(value) && value >= 0;
+      return Number.isInteger(value) &&
+        value >= 0 &&
+        value <= 2147483647;
+
     case "tags":
-      return Array.isArray(value) && value.every(
-        (tag) => typeof tag === "string" && tag.trim().length >= 1 && tag.trim().length <= 5
-      );
+      return Array.isArray(value) &&
+        value.every(
+          (tag) =>
+            typeof tag === "string" &&
+            tag.trim().length >= 1 &&
+            tag.trim().length <= 5
+        );
+
     default:
       return false;
   }
 };
 
+const handleError = (res, error) => {
+  console.error("Product API error:", error);
+
+  if (error.code === "P2025") {
+    return res.status(404).json({
+      message: "상품을 찾을 수 없습니다.",
+    });
+  }
+
+  return res.status(500).json({
+    message: "서버 오류가 발생했습니다.",
+  });
+};
+
 // 상품 등록
 router.post("/", async (req, res) => {
   try {
-    const { name, description, price, tags } = req.body;
+    const data = req.body;
 
-    // 필수 입력값 검사
     if (
-      !isValidProductField("name", name) ||
-      !isValidProductField("description", description) ||
-      !isValidProductField("price", price) ||
-      !isValidProductField("tags", tags)
+      !data ||
+      typeof data !== "object" ||
+      Array.isArray(data) ||
+      !productFields.every((field) =>
+        isValidProductField(field, data[field])
+      )
     ) {
       return res.status(400).json({
         message: "상품 정보를 올바르게 입력해주세요.",
       });
     }
 
-    // MongoDB에 상품 저장
-    const product = await Product.create({
-      name,
-      description,
-      price,
-      tags,
+    const product = await prisma.product.create({
+      data: {
+        name: data.name,
+        description: data.description,
+        price: data.price,
+        tags: data.tags,
+      },
     });
 
-    // 등록된 상품 반환
-    return res.status(201).json({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      tags: product.tags,
-      createdAt: product.createdAt,
-      updatedAt: product.updatedAt,
-    });
+    return res.status(201).json(product);
   } catch (error) {
-    console.error("상품 등록 오류:", error);
-
-    return res.status(500).json({
-      message: "상품 등록 중 오류가 발생했습니다.",
-    });
+    return handleError(res, error);
   }
 });
 
@@ -71,7 +96,6 @@ router.get("/", async (req, res) => {
     const offset = Number(req.query.offset ?? 0);
     const limit = Number(req.query.limit ?? 10);
 
-    // 페이지네이션 및 정렬 검증
     if (
       !Number.isSafeInteger(offset) ||
       offset < 0 ||
@@ -86,207 +110,154 @@ router.get("/", async (req, res) => {
       });
     }
 
-    // 상품명과 설명에서 검색
-    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-    const filter = keyword
+    const where = keyword
       ? {
-          $or: [
-            { name: { $regex: escapedKeyword, $options: "i" } },
-            { description: { $regex: escapedKeyword, $options: "i" } },
+          OR: [
+            {
+              name: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: keyword,
+                mode: "insensitive",
+              },
+            },
           ],
         }
       : {};
 
-    // 전체 개수와 현재 페이지 상품 조회
-    const [totalCount, products] = await Promise.all([
-      Product.countDocuments(filter),
-      Product.find(filter)
-        .sort({ createdAt: -1, _id: -1 })
-        .skip(offset)
-        .limit(limit),
+    const [totalCount, products] = await prisma.$transaction([
+      prisma.product.count({ where }),
+      prisma.product.findMany({
+        where,
+        skip: offset,
+        take: limit,
+        orderBy: [
+          { createdAt: "desc" },
+          { id: "desc" },
+        ],
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          createdAt: true,
+        },
+      }),
     ]);
 
     return res.status(200).json({
       totalCount,
-      list: products.map((product) => ({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        createdAt: product.createdAt,
-      })),
+      list: products,
     });
   } catch (error) {
-    console.error("상품 목록 조회 오류:", error);
-
-    return res.status(500).json({
-      message: "상품 목록 조회 중 오류가 발생했습니다.",
-    });
+    return handleError(res, error);
   }
 });
 
 // 상품 상세 조회
 router.get("/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // 올바른 MongoDB ID인지 확인
-    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+    if (!isValidId(req.params.id)) {
       return res.status(400).json({
         message: "올바르지 않은 상품 ID입니다.",
       });
     }
 
-    const product = await Product.findById(id);
+    const product = await prisma.product.findUnique({
+      where: { id: Number(req.params.id) },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        tags: true,
+        createdAt: true,
+      },
+    });
 
-    // 해당 상품이 없는 경우
     if (!product) {
       return res.status(404).json({
         message: "상품을 찾을 수 없습니다.",
       });
     }
 
-    return res.status(200).json({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      tags: product.tags,
-      createdAt: product.createdAt,
-    });
+    return res.status(200).json(product);
   } catch (error) {
-    console.error("상품 상세 조회 오류:", error);
-
-    return res.status(500).json({
-      message: "상품 상세 조회 중 오류가 발생했습니다.",
-    });
+    return handleError(res, error);
   }
 });
 
 // 상품 수정
 router.patch("/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, description, price, tags } = req.body;
-
-    // MongoDB ID 검증
-    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+    if (!isValidId(req.params.id)) {
       return res.status(400).json({
         message: "올바르지 않은 상품 ID입니다.",
       });
     }
 
-    // 수정 가능한 필드만 허용
+    const body = req.body;
+
+    if (
+      !body ||
+      typeof body !== "object" ||
+      Array.isArray(body)
+    ) {
+      return res.status(400).json({
+        message: "수정할 정보를 입력해주세요.",
+      });
+    }
+
     const updates = {};
 
-    if (name !== undefined) {
-      if (!isValidProductField("name", name)) {
-        return res.status(400).json({
-          message: "상품 이름을 올바르게 입력해주세요.",
-        });
-      }
+    for (const field of productFields) {
+      if (body[field] !== undefined) {
+        if (!isValidProductField(field, body[field])) {
+          return res.status(400).json({
+            message: `${field} 필드가 올바르지 않습니다.`,
+          });
+        }
 
-      updates.name = name;
+        updates[field] = body[field];
+      }
     }
 
-    if (description !== undefined) {
-      if (!isValidProductField("description", description)) {
-        return res.status(400).json({
-          message: "상품 설명을 올바르게 입력해주세요.",
-        });
-      }
-
-      updates.description = description;
-    }
-
-    if (price !== undefined) {
-      if (!isValidProductField("price", price)) {
-        return res.status(400).json({
-          message: "상품 가격을 올바르게 입력해주세요.",
-        });
-      }
-
-      updates.price = price;
-    }
-
-    if (tags !== undefined) {
-      if (!isValidProductField("tags", tags)) {
-        return res.status(400).json({
-          message: "상품 태그를 올바르게 입력해주세요.",
-        });
-      }
-
-      updates.tags = tags;
-    }
-
-    // 수정할 값이 없는 경우
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({
-        message: "수정할 상품 정보를 입력해주세요.",
+        message: "수정할 정보를 입력해주세요.",
       });
     }
 
-    const product = await Product.findByIdAndUpdate(
-      id,
-      updates,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!product) {
-      return res.status(404).json({
-        message: "상품을 찾을 수 없습니다.",
-      });
-    }
-
-    return res.status(200).json({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      tags: product.tags,
-      createdAt: product.createdAt,
-      updatedAt: product.updatedAt,
+    const product = await prisma.product.update({
+      where: { id: Number(req.params.id) },
+      data: updates,
     });
+
+    return res.status(200).json(product);
   } catch (error) {
-    console.error("상품 수정 오류:", error);
-
-    return res.status(500).json({
-      message: "상품 수정 중 오류가 발생했습니다.",
-    });
+    return handleError(res, error);
   }
 });
 
 // 상품 삭제
 router.delete("/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // MongoDB ID 검증
-    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+    if (!isValidId(req.params.id)) {
       return res.status(400).json({
         message: "올바르지 않은 상품 ID입니다.",
       });
     }
 
-    const product = await Product.findByIdAndDelete(id);
+    await prisma.product.delete({
+      where: { id: Number(req.params.id) },
+    });
 
-    if (!product) {
-      return res.status(404).json({
-        message: "상품을 찾을 수 없습니다.",
-      });
-    }
-
-    // 삭제 성공: 응답 본문 없음
     return res.status(204).send();
   } catch (error) {
-    console.error("상품 삭제 오류:", error);
-
-    return res.status(500).json({
-      message: "상품 삭제 중 오류가 발생했습니다.",
-    });
+    return handleError(res, error);
   }
 });
 

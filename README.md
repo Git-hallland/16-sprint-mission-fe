@@ -58,3 +58,84 @@ npm run test:legacy-apis
 ## 프로젝트 이력
 
 이 저장소는 스프린트 미션을 이어서 진행한 결과물입니다. 초기 Sprint 2에서는 HTML과 CSS로 랜딩·로그인·회원가입 화면을 만들고 Netlify에 배포했습니다. 이후 React 마이그레이션, 상품 마켓, Express 상품 API와 등록 폼을 추가했습니다.
+
+---
+
+## Sprint Mission 6 — Backend API
+
+스프린트 미션 6에서는 기존 Express 백엔드의 MongoDB/Mongoose
+데이터 접근 코드를 PostgreSQL과 Prisma ORM으로 전환했습니다.
+
+### 기술 스택
+
+- Node.js
+- Express 5
+- PostgreSQL 18
+- Prisma ORM 6
+- JavaScript (ES Modules)
+
+### 구현 기능
+
+#### 중고마켓
+
+- 상품 등록
+- 상품 목록 및 상세 조회
+- 상품 수정 및 삭제
+- 키워드 검색
+- 최신순 정렬
+- Offset 페이지네이션
+
+#### 자유게시판
+
+- 게시글 등록
+- 게시글 목록 및 상세 조회
+- 게시글 수정 및 삭제
+- 제목과 내용 키워드 검색
+- 최신순 정렬
+- Offset 페이지네이션
+
+#### 댓글
+
+- 상품 댓글 등록 및 목록 조회
+- 게시글 댓글 등록 및 목록 조회
+- 댓글 수정 및 삭제
+- Cursor 페이지네이션
+- 부모 상품 또는 게시글 삭제 시 댓글 연쇄 삭제
+
+### API 엔드포인트
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /products | 상품 등록 |
+| GET | /products | 상품 목록 |
+| GET | /products/:id | 상품 상세 |
+| PATCH | /products/:id | 상품 수정 |
+| DELETE | /products/:id | 상품 삭제 |
+| POST | /articles | 게시글 등록 |
+| GET | /articles | 게시글 목록 |
+| GET | /articles/:id | 게시글 상세 |
+| PATCH | /articles/:id | 게시글 수정 |
+| DELETE | /articles/:id | 게시글 삭제 |
+| POST | /products/:id/comments | 상품 댓글 등록 |
+| GET | /products/:id/comments | 상품 댓글 목록 |
+| POST | /articles/:id/comments | 게시글 댓글 등록 |
+| GET | /articles/:id/comments | 게시글 댓글 목록 |
+| PATCH | /comments/:id | 댓글 수정 |
+| DELETE | /comments/:id | 댓글 삭제 |
+
+### 서버 실행
+
+server 디렉터리에서 실행합니다.
+
+1. PostgreSQL 서버를 실행합니다.
+2. panda_market 데이터베이스를 준비합니다.
+3. server/.env에 DATABASE_URL 및 PORT를 설정합니다.
+4. 의존성을 설치하고 마이그레이션을 적용합니다.
+
+```powershell
+cd server
+npm.cmd install
+npx.cmd prisma migrate deploy
+npx.cmd prisma generate
+npm.cmd run seed
+npm.cmd run dev
