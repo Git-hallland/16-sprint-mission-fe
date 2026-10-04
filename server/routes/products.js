@@ -3,6 +3,23 @@ import Product from "../models/Product.js";
 
 const router = express.Router();
 
+const isValidProductField = (field, value) => {
+  switch (field) {
+    case "name":
+      return typeof value === "string" && value.trim().length >= 1 && value.trim().length <= 10;
+    case "description":
+      return typeof value === "string" && value.trim().length >= 10 && value.trim().length <= 100;
+    case "price":
+      return typeof value === "number" && Number.isFinite(value) && value >= 0;
+    case "tags":
+      return Array.isArray(value) && value.every(
+        (tag) => typeof tag === "string" && tag.trim().length >= 1 && tag.trim().length <= 5
+      );
+    default:
+      return false;
+  }
+};
+
 // 상품 등록
 router.post("/", async (req, res) => {
   try {
@@ -10,17 +27,10 @@ router.post("/", async (req, res) => {
 
     // 필수 입력값 검사
     if (
-      typeof name !== "string" ||
-      name.trim().length < 1 ||
-      name.trim().length > 10 ||
-      typeof description !== "string" ||
-      description.trim().length < 10 ||
-      description.trim().length > 100 ||
-      typeof price !== "number" ||
-      !Number.isFinite(price) ||
-      price < 0 ||
-      !Array.isArray(tags) ||
-      !tags.every((tag) => typeof tag === "string" && tag.trim().length >= 1 && tag.trim().length <= 5)
+      !isValidProductField("name", name) ||
+      !isValidProductField("description", description) ||
+      !isValidProductField("price", price) ||
+      !isValidProductField("tags", tags)
     ) {
       return res.status(400).json({
         message: "상품 정보를 올바르게 입력해주세요.",
@@ -170,11 +180,7 @@ router.patch("/:id", async (req, res) => {
     const updates = {};
 
     if (name !== undefined) {
-      if (
-        typeof name !== "string" ||
-        name.trim().length < 1 ||
-        name.trim().length > 10
-      ) {
+      if (!isValidProductField("name", name)) {
         return res.status(400).json({
           message: "상품 이름을 올바르게 입력해주세요.",
         });
@@ -184,11 +190,7 @@ router.patch("/:id", async (req, res) => {
     }
 
     if (description !== undefined) {
-      if (
-        typeof description !== "string" ||
-        description.trim().length < 10 ||
-        description.trim().length > 100
-      ) {
+      if (!isValidProductField("description", description)) {
         return res.status(400).json({
           message: "상품 설명을 올바르게 입력해주세요.",
         });
@@ -198,11 +200,7 @@ router.patch("/:id", async (req, res) => {
     }
 
     if (price !== undefined) {
-      if (
-        typeof price !== "number" ||
-        !Number.isFinite(price) ||
-        price < 0
-      ) {
+      if (!isValidProductField("price", price)) {
         return res.status(400).json({
           message: "상품 가격을 올바르게 입력해주세요.",
         });
@@ -212,10 +210,7 @@ router.patch("/:id", async (req, res) => {
     }
 
     if (tags !== undefined) {
-      if (
-        !Array.isArray(tags) ||
-        !tags.every((tag) => typeof tag === "string" && tag.trim().length >= 1 && tag.trim().length <= 5)
-      ) {
+      if (!isValidProductField("tags", tags)) {
         return res.status(400).json({
           message: "상품 태그를 올바르게 입력해주세요.",
         });

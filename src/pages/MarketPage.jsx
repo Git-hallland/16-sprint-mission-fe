@@ -10,7 +10,7 @@ import usePageSize from "../hooks/usePageSize.js";
 function MarketPage() {
   const [products, setProducts] = useState([]);
   const [keyword, setKeyword] = useState("");
-  const [orderBy, setOrderBy] = useState("recent");
+  const orderBy = "recent";
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,10 +60,10 @@ function MarketPage() {
     };
   }, [page, keyword, orderBy, pageSize]);
 
-  // 검색 조건이나 화면 크기가 바뀌면 첫 페이지로 이동
+  // 화면 크기에 따라 페이지당 상품 수가 달라지면 첫 페이지부터 조회합니다.
   useEffect(() => {
     setPage(1);
-  }, [keyword, orderBy, pageSize]);
+  }, [pageSize]);
 
   const totalPages = Math.ceil(totalCount / pageSize);
   const pageGroup = Math.floor((page - 1) / 5);
@@ -102,14 +102,14 @@ function MarketPage() {
                   aria-label="상품 검색"
                   placeholder="검색할 상품을 입력해주세요"
                   value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
+                  onChange={(e) => {
+                    setPage(1);
+                    setKeyword(e.target.value);
+                  }}
                 />
               </label>
 
-              <SortDropdown
-                value={orderBy}
-                onChange={setOrderBy}
-              />
+              <SortDropdown />
             </div>
           </div>
 
